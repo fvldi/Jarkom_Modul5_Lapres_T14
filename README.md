@@ -10,9 +10,9 @@ Setelah kalian mempelajari semua modul yang telah diberikan, Bibah ingin meminta
 terakhir kalinya kepada kalian. Dan kalian dengan senang hati mau membantu Bibah.
 
 **(A)** Tugas pertama kalian yaitu membuat topologi jaringan sesuai dengan rancangan yang diberikan
-Bibah seperti dibawah ini :
+Bibah seperti dibawah ini:
   
-![Gambar](Image/1.PNG)
+![Gambar](Image/A1.PNG)
 
 **Keterangan :** 
     
@@ -68,13 +68,13 @@ Pengerjaan menggunakan teknik CIDR (Classless Inter Domain)
 **(Soal A)**
 - Buat file `topologi.sh` dengan isi sebagai berikut:
 
-![Gambar](Image/A.PNG)
+    ![Gambar](Image/A2.PNG)
 
 **(Soal B)**  
 CIDR (Classless Inter Domain Routing) dengan langkah sebagai berikut:
 - Buat pembagian subnet kemudian hitung subnet pada tiap bagian sebagai berikut:
 
-![Gambar](Image/B1.PNG)
+    ![Gambar](Image/B1.PNG)
 
     - Gabungkan Host A1 - A2 & A5 - A6 hingga membentuk Host baru yaitu B1 & B2 dengan Subnet Mask /23.
     - Kemudian gabungkan Host B1 - A3 & B2 - A4 hingga membentuk Host baru yaitu C1 & C2 dengan Subnet Mask /22.
@@ -82,22 +82,48 @@ CIDR (Classless Inter Domain Routing) dengan langkah sebagai berikut:
 
 - Hitung IP Address yang dibutuhkan (Jumlah Host, Router, dan Server). Pada soal ini ada kurang lebih 422 IP Address maka subnet yang dipakai untuk membuat pohon IP yaitu subnet 21. 
 
-| Nama | Jumlah IP | Netmask |
-|--|--|--|
-| A1 | 3 | /29 |
-| A2 | 201 | /24 |
-| A3 | 2 | /30 |
-| A4 | 2 | /30 |
-| A5 | 211 | /22 |
-| A6 | 3 | /29 |
-
+    | Nama | Jumlah IP | Netmask |
+    |--|--|--|
+    | A1 | 3 | /29 |
+    | A2 | 201 | /24 |
+    | A3 | 2 | /30 |
+    | A4 | 2 | /30 |
+    | A5 | 211 | /22 |
+    | A6 | 3 | /29 |
+  
 - Buat pohon IP berdasarkan pembagian subnet yang ada pada topologi seperti gambar berikut ini:
 
-![Gambar](Image/B2.PNG)
+    ![Gambar](Image/B2.PNG)
 
 **(Soal C)**
 - Routing dilakukan dengan mengisi file `/etc/network/interfaces`.
-- Kemudian isi file route.sh pada uml SURABAYA, KEDIRI, dan BATU.
+- Kemudian isi file route.sh pada uml SURABAYA dan KEDIRI.
 
-![Gambar](Image/C1.PNG)
-![Gambar](Image/C2.PNG)
+    ![Gambar](Image/C1.PNG)
+    ![Gambar](Image/C2.PNG)
+
+**(Soal D)**
+- Pertama isi file `/etc/dhcp/dhcpd.conf` pada UML MOJOKERTO
+- Kemudian isi file `/etc/default/isc-dhcp-relay` pada UML SURABAYA, KEDIRI, BATU, dan MOJOKERTO
+
+**(Soal 1)**
+- Konfigurasi UML SURABAYA dengan syntax berikut:
+
+        iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j SNAT --to-source 10.151.76.82
+
+    ![Gambar](Image/1A.PNG)
+
+**(Soal 2)**
+- Konfigurasi UML SURABAYA dengan syntax berikut:
+
+        iptables -A FORWARD -p tcp --dport 22 -d 10.151.77.160/29 -i eth0 -j DROP
+
+    ![Gambar](Image/2A.PNG)
+
+**(Soal 3)**
+- Konfigurasi UML MALANG & MOJOKERTO dengan syntax berikut:
+
+        iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j REJECT
+    
+    ![Gambar](Image/3A.PNG)
+    ![Gambar](Image/3B.PNG)
